@@ -1,0 +1,7 @@
+# Ignored files and directories
+.DS_Store
+.eslintignore
+.idea/
+dist/
+node_modules/
+yarn.lock
