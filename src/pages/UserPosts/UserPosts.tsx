@@ -2,18 +2,19 @@ import * as S from "./styles";
 import Post from "../../components/Post/Post";
 import { useQuery } from "react-query";
 import { fetchPosts } from "../../utils/fetch/fetchPosts";
-import { orderBy } from "lodash";
+import { useParams, useSearchParams } from "react-router-dom";
 import { SortBy } from "../../types/common";
-import { useSearchParams } from "react-router-dom";
+import { orderBy } from "lodash";
 
-const Posts = () => {
+const UserPosts = () => {
   let [searchParams] = useSearchParams();
+  const { userId } = useParams();
 
   const {
     data: posts,
     isLoading,
     isError,
-  } = useQuery("posts", () => fetchPosts(), {
+  } = useQuery("user-posts", () => fetchPosts(userId), {
     refetchOnMount: false,
   });
 
@@ -38,4 +39,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default UserPosts;

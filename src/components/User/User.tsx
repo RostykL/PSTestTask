@@ -1,5 +1,6 @@
 import * as S from "./styles";
 import { ROUTES } from "../../constants/routes";
+import { appendSearchToURL } from "../../utils/appendSearchToURL";
 import { useSearchParams } from "react-router-dom";
 
 export interface UserProps {
@@ -11,11 +12,7 @@ export interface UserProps {
 }
 
 const User = ({ name, username, email, phone, id }: UserProps) => {
-  let [searchParams, setSearchParams] = useSearchParams();
-
-  const onNavigate = () => {
-    // setSearchParams(username);
-  };
+  const [searchParams] = useSearchParams();
 
   return (
     <S.Wrapper>
@@ -33,11 +30,30 @@ const User = ({ name, username, email, phone, id }: UserProps) => {
       </S.Column>
 
       <S.CTAButtonsWrapper>
-        <S.ViewAlbums to={ROUTES.USER_ALBUMS(id)} onClick={onNavigate}>
+        <S.ViewAlbums
+          to={{
+            pathname: ROUTES.USER_ALBUMS(id),
+            search: appendSearchToURL(searchParams, "sortBy"),
+          }}
+        >
           View Albums
         </S.ViewAlbums>
-        <S.ViewPosts to={ROUTES.POSTS}>View Posts</S.ViewPosts>
-        <S.ViewPosts to={ROUTES.USER_DETAILS(id)}>User Details</S.ViewPosts>
+        <S.ViewPosts
+          to={{
+            pathname: ROUTES.POSTS,
+            search: appendSearchToURL(searchParams, "sortBy"),
+          }}
+        >
+          View Posts
+        </S.ViewPosts>
+        <S.ViewPosts
+          to={{
+            pathname: ROUTES.USER_DETAILS(id),
+            search: appendSearchToURL(searchParams, "sortBy"),
+          }}
+        >
+          User Details
+        </S.ViewPosts>
       </S.CTAButtonsWrapper>
     </S.Wrapper>
   );

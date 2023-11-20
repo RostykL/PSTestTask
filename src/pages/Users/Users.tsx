@@ -1,33 +1,50 @@
-import { IUser } from "../../types/user";
 import User from "../../components/User";
 import * as S from "./styles";
-import { useLoaderData } from "react-router-dom";
-import PageSuspense from "../../components/PageSuspense";
+import { useSearchParams } from "react-router-dom";
+import { filterUsersByUsername } from "../../utils/filterUsersByUsername";
+import { useQuery } from "react-query";
+import { fetchUsers } from "../../utils/fetch/fetchUsers";
+import { SortBy } from "../../types/common";
 
 const Users = () => {
-  const { users } = useLoaderData() as { users: IUser[] };
+  const {
+    data: usersData,
+    isLoading,
+    isError,
+  } = useQuery("users", fetchUsers, { refetchOnMount: false });
+
+  let [searchParams] = useSearchParams();
+
+  if (isLoading) {
+    return <div>is loading</div>;
+  }
+
+  if (isError) {
+    return <div>is error</div>;
+  }
+
+  const username = searchParams.get("username") || "";
+  const sortByType = searchParams.get("sortBy") as SortBy;
+
+  const filterByUsername = filterUsersByUsername(
+    usersData,
+    username,
+    sortByType
+  );
 
   return (
-    <PageSuspense resolve={users}>
-      {(usersData) => {
-        return (
-          <S.Wrapper>
-            {(usersData as IUser[]).map(
-              ({ name, username, email, phone, id }) => (
-                <User
-                  email={email}
-                  id={id}
-                  key={id}
-                  name={name}
-                  phone={phone}
-                  username={username}
-                />
-              )
-            )}
-          </S.Wrapper>
-        );
-      }}
-    </PageSuspense>
+    <S.Wrapper>
+      {filterByUsername.map(({ name, username, email, phone, id }) => (
+        <User
+          email={email}
+          id={id}
+          key={id}
+          name={name}
+          phone={phone}
+          username={username}
+        />
+      ))}
+    </S.Wrapper>
   );
 };
 

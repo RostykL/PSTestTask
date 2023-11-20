@@ -1,28 +1,57 @@
 import * as S from "./styles";
 import { ROUTES } from "../../../constants/routes";
-import { useSearchParams } from "react-router-dom";
+
+import { useSetParam } from "../../../hooks/useSetParam/useSetParam";
+import { useLocation, useSearchParams } from "react-router-dom";
+import { SHOW_SEARCH_INPUT_FOR_ROUTES } from "../../../constants/common";
+import { appendSearchToURL } from "../../../utils/appendSearchToURL";
 
 const Header = () => {
-  let [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+  const [searchUsername, setSearchUsername] = useSetParam("username", "");
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchParams({
-      username: event.target.value,
-    });
-  };
+  const location = useLocation();
+
+  const isShowSearchField = SHOW_SEARCH_INPUT_FOR_ROUTES.includes(
+    location.pathname
+  );
 
   return (
     <S.Wrapper>
       <S.CTAButtonsWrapper>
-        <S.NavButton to={ROUTES.USERS}>Users</S.NavButton>
-        <S.NavButton to={ROUTES.ALBUMS}>Albums</S.NavButton>
-        <S.NavButton to={ROUTES.POSTS}>Posts</S.NavButton>
+        <S.NavButton
+          to={{
+            pathname: ROUTES.USERS,
+            search: appendSearchToURL(searchParams, "sortBy"),
+          }}
+        >
+          Users
+        </S.NavButton>
+        <S.NavButton
+          to={{
+            pathname: ROUTES.ALBUMS,
+            search: appendSearchToURL(searchParams, "sortBy"),
+          }}
+        >
+          Albums
+        </S.NavButton>
+        <S.NavButton
+          to={{
+            pathname: ROUTES.POSTS,
+            search: appendSearchToURL(searchParams, "sortBy"),
+          }}
+        >
+          Posts
+        </S.NavButton>
       </S.CTAButtonsWrapper>
 
-      <S.SearchField
-        placeholder="Search by username"
-        onChange={handleSearchChange}
-      />
+      {isShowSearchField ? (
+        <S.SearchField
+          placeholder="Search by username"
+          onChange={setSearchUsername}
+          value={searchUsername}
+        />
+      ) : null}
     </S.Wrapper>
   );
 };
