@@ -1,10 +1,6 @@
 import * as S from "./styles";
 import { ROUTES } from "../../constants/routes";
-
-export interface AlbumProps {
-  title: string;
-  userId: number;
-}
+import { AlbumProps } from "./types";
 
 const Album = ({ title, userId }: AlbumProps) => {
   return (

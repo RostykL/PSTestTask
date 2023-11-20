@@ -1,11 +1,6 @@
 import * as S from "./styles";
 import { ROUTES } from "../../constants/routes";
-
-export interface PostProps {
-  title: string;
-  body: string;
-  userId: number;
-}
+import { PostProps } from "./types";
 
 const Post = ({ title, body, userId }: PostProps) => {
   return (

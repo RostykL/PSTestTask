@@ -2,14 +2,7 @@ import * as S from "./styles";
 import { ROUTES } from "../../constants/routes";
 import { appendSearchToURL } from "../../utils/appendSearchToURL";
 import { useSearchParams } from "react-router-dom";
-
-export interface UserProps {
-  email: string;
-  id: number;
-  name: string;
-  phone: string;
-  username: string;
-}
+import { UserProps } from "./types";
 
 const User = ({ name, username, email, phone, id }: UserProps) => {
   const [searchParams] = useSearchParams();
