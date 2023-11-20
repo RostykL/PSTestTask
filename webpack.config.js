@@ -1,5 +1,8 @@
 const path = require("path");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
+
+require("dotenv").config();
 
 module.exports = {
   mode: "development",
@@ -41,6 +44,12 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: "./src/index.html",
+    }),
+    new webpack.ProgressPlugin(),
+    new webpack.DefinePlugin({
+      "process.env": {
+        REACT_APP_BASE_URL: JSON.stringify(process.env.REACT_APP_BASE_URL),
+      },
     }),
   ],
   resolve: {

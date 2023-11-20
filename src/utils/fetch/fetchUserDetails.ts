@@ -1,12 +1,9 @@
-import axios from "axios";
 import { IUser } from "../../types/user";
-
-const baseURL = "https://jsonplaceholder.typicode.com";
+import { axiosInstance } from "../axiosInstance";
 
 export const fetchUserDetails = async (id?: string): Promise<IUser[]> => {
   try {
-    const response = await axios.get("/users", {
-      baseURL,
+    const response = await axiosInstance.get("/users", {
       params: {
         id,
       },

@@ -1,12 +1,9 @@
-import axios from "axios";
 import { IAlbums } from "../../types/album";
-
-const baseURL = "https://jsonplaceholder.typicode.com";
+import { axiosInstance } from "../axiosInstance";
 
 export const fetchAlbums = async (userId?: string): Promise<IAlbums[]> => {
   try {
-    const response = await axios.get("/albums", {
-      baseURL,
+    const response = await axiosInstance.get("/albums", {
       params: {
         userId,
       },
